@@ -1,5 +1,6 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
+import authRoutes from "./routes/auth";
 
 const prisma = new PrismaClient();
 
@@ -7,6 +8,8 @@ const app = express();
 const port = 5000;
 
 app.use(express.json());
+
+app.use("/api/auth", authRoutes)
 
 app.get("/", async (req, res) => {
   try {
