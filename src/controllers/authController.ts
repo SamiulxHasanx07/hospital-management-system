@@ -33,3 +33,31 @@ export const register = async (req: Request, res: Response): Promise<Response> =
     }
 
 }
+
+export const login = async (req: Request, res: Response): Promise<Response> => {
+    const { email, password } = req.body;
+
+    try {
+        const user = await prisma.user.findUnique({ where: { email } });
+
+        if (!user) {
+            return res.status(404).json({ error: "User not found!" });
+        }
+
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            return res.status(401).json({ error: "Invalid password" });
+        }
+
+        const token = jwt.sign(
+            { id: user.id, role: user.role },
+            process.env.JWT_SECRET!,
+            { expiresIn: "1h" }
+        );
+
+        return res.status(200).json({ message: "Login successful", user, token });
+    } catch (error) {
+        console.error("Login error:", error);
+        return res.status(500).json({ error: "Internal server error" });
+    }
+};
