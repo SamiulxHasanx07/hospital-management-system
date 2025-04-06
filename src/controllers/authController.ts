@@ -2,62 +2,40 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from 'jsonwebtoken';
 
-import { Roles } from "../utils/roles";
 import prisma from '../../prisma/prismaClient';
+import { loginUser, registerUser } from "../services/authService";
 
 export const register = async (req: Request, res: Response): Promise<Response> => {
     const { name, email, password, role } = req.body;
-    console.log(name, email, password, role)
+
     try {
-        if (!Object.values(Roles).includes(role)) {
-            return res.status(400).json({ error: "Invalid role" })
-        }
-        const isEmailRegistered = await prisma.user.findUnique({ where: { email } });
-        if (isEmailRegistered) {
-            return res.status(409).json({ error: "Email is already registered!" });
-        }
-        const hashPass = await bcrypt.hash(password, 10);
-        const newUser = await prisma.user.create({
-            data: {
-                name,
-                email,
-                password: hashPass,
-                role
-            }
-        });
+        const result = await registerUser(name, email, password, role);
+        return res.status(201).json(result);
+    } catch (error: any) {
+        const errorMsg = error.message || "Something went wrong";
 
-        const token = jwt.sign({ userId: newUser.id, role: newUser.role }, process.env.JWT_SECRET!, { expiresIn: "1hr" })
-        return res.status(201).json({ message: "User registered successfully", token });
-    } catch (error) {
-        return res.status(500).json({ error: 'Failed to register user' });
+        if (errorMsg === "Invalid role") {
+            return res.status(400).json({ error: errorMsg });
+        } else if (errorMsg === "Email is already registered") {
+            return res.status(409).json({ error: errorMsg });
+        }
+
+        return res.status(500).json({ error: "Failed to register user" });
     }
-
-}
+};
 
 export const login = async (req: Request, res: Response): Promise<Response> => {
     const { email, password } = req.body;
 
     try {
-        const user = await prisma.user.findUnique({ where: { email } });
-
-        if (!user) {
-            return res.status(404).json({ error: "User not found!" });
-        }
-
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-        if (!isPasswordValid) {
-            return res.status(401).json({ error: "Invalid password" });
-        }
-
-        const token = jwt.sign(
-            { id: user.id, role: user.role },
-            process.env.JWT_SECRET!,
-            { expiresIn: "1h" }
-        );
-
+        const { user, token } = await loginUser(email, password);
         return res.status(200).json({ message: "Login successful", user, token });
-    } catch (error) {
-        console.error("Login error:", error);
-        return res.status(500).json({ error: "Internal server error" });
+    } catch (error: any) {
+        const message = error.message || "Internal server error";
+
+        if (message === "User not found") return res.status(404).json({ error: message });
+        if (message === "Invalid password") return res.status(401).json({ error: message });
+
+        return res.status(500).json({ error: message });
     }
 };
