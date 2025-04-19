@@ -61,3 +61,14 @@ model Appointment {
   nurseId    Int?
   nurse      Nurse?   @relation(fields: [nurseId], references: [id], onUpdate: NoAction, onDelete: NoAction)
 }
+
+//Slot
+model DoctorScheduleSlot {
+  id           Int      @id @default(autoincrement())
+  startTime    String
+  endTime      String
+  maxPatients  Int      @default(25)
+  available    Boolean  @default(true)
+
+  createdAt    DateTime @default(now())
+}
