@@ -10,7 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 // User model
 model User {
   id        Int     @id @default(autoincrement())
@@ -50,19 +49,21 @@ model Nurse {
   department  String
   shift       String 
   user        User        @relation(fields: [userId], references: [id])
-  appointments Appointment[]
 }
 
 // Appointment model
 model Appointment {
-  id         Int      @id @default(autoincrement())
-  date       DateTime
-  doctorId   Int
-  patientId  Int
-  doctor     Doctor   @relation(fields: [doctorId], references: [id], onUpdate: NoAction, onDelete: NoAction)
-  patient    Patient  @relation(fields: [patientId], references: [id], onUpdate: NoAction, onDelete: NoAction)
-  nurseId    Int?
-  nurse      Nurse?   @relation(fields: [nurseId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+  id          Int      @id @default(autoincrement())
+  date        DateTime
+  doctorId    Int
+  patientId   Int
+  scheduleId  Int
+  slotId      Int
+  disease     String
+  status      String   @default("booked")
+  remarks     String?
+  doctor      Doctor   @relation(fields: [doctorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  patient     Patient  @relation(fields: [patientId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 //Slot
