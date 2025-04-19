@@ -1,3 +1,6 @@
+//npx prisma migrate dev --name init
+//npx prisma generate
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -71,4 +74,19 @@ model DoctorScheduleSlot {
   available    Boolean  @default(true)
 
   createdAt    DateTime @default(now())
+}
+
+//doctor schedule
+model DoctorSchedule {
+  id           Int       @id @default(autoincrement())
+  doctorId     Int
+  date         DateTime        
+  visitFee     Int
+  branch       String?
+  floorNumber  String
+  roomNumber   String
+  location     String
+  remarks      String?
+  status       String    @default("active")
+  @@unique([doctorId, date])
 }
