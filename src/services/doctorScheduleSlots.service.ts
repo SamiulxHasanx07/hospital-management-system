@@ -21,6 +21,24 @@ export const createDoctorScheduleSlot = async (
     }
 };
 
+export const createDoctorScheduleSlots = async (
+    slots: { startTime: string; endTime: string; maxPatients?: number }[]
+) => {
+    try {
+        const newSlots = await prisma.doctorScheduleSlot.createMany({
+            data: slots.map((slot) => ({
+                startTime: slot.startTime,
+                endTime: slot.endTime,
+                maxPatients: slot.maxPatients || 25,
+            })),
+        });
+        return newSlots;
+    } catch (error) {
+        throw new Error('Error creating doctor schedule slots');
+    }
+};
+
+
 export const getAllDoctorScheduleSlots = async () => {
     try {
         const slots = await prisma.doctorScheduleSlot.findMany();

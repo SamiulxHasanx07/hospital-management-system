@@ -4,7 +4,8 @@ import {
   getAllDoctorScheduleSlots,
   getDoctorScheduleSlotById,
   updateDoctorScheduleSlot,
-  deleteDoctorScheduleSlot
+  deleteDoctorScheduleSlot,
+  createDoctorScheduleSlots
 } from './../services/doctorScheduleSlots.service';
 
 export const addSlot = async (req: Request, res: Response) => {
@@ -16,6 +17,18 @@ export const addSlot = async (req: Request, res: Response) => {
     return res.status(500).json({ message: error });
   }
 };
+
+export const addSlots = async (req: Request, res: Response) => {
+  const slots = req.body;
+
+  try {
+    const newSlots = await createDoctorScheduleSlots(slots);
+    return res.status(201).json(newSlots);
+  } catch (error) {
+    return res.status(500).json({ message: error || 'Error creating doctor schedule slots' });
+  }
+};
+
 
 export const getSlots = async (req: Request, res: Response) => {
   try {
