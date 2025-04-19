@@ -20,6 +20,7 @@ model User {
   doctor    Doctor? @relation
   patient   Patient?
   nurse     Nurse?
+  contact   Contact? 
 }
 
 // Doctor model
@@ -90,4 +91,19 @@ model DoctorSchedule {
   remarks      String?
   status       String    @default("active")
   @@unique([doctorId, date])
+}
+
+//user contacts
+model Contact {
+  id          Int     @id @default(autoincrement())
+  userId      Int     @unique
+  phone       String
+  email       String?
+  house       String?
+  village     String?
+  postOffice  String?
+  city        String?
+  division    String?
+  country     String?
+  user        User   @relation(fields: [userId], references: [id])
 }
