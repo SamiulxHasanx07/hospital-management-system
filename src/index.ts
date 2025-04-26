@@ -1,7 +1,7 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
 
-import authRoutes from "./routes/auth";
+import authRoutes from "./routes/auth.route";
 import userRoleRoutes from "./routes/userRole.routes";
 import doctorSchedules from "./routes/doctorSchedule.routes"
 import doctorScheduleSlotRoutes from "./routes/doctorScheduleSlots.routes"

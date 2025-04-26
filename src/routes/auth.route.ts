@@ -1,6 +1,6 @@
 import { Router } from "express";
 const router = Router();
-import { login, register } from "../controllers/authController";
+import { login, register } from "../controllers/auth.controller";
 
 // @ts-ignore
 router.post("/login", login)

@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from 'jsonwebtoken';
 
 import prisma from '../../prisma/prismaClient';
-import { loginUser, registerUser } from "../services/authService";
+import { loginUser, registerUser } from "../services/auth.service";
 
 export const register = async (req: Request, res: Response): Promise<Response> => {
     const { name, email, password, role } = req.body;
