@@ -7,6 +7,7 @@ import doctorSchedules from "./routes/doctorSchedule.routes"
 import doctorScheduleSlotRoutes from "./routes/doctorScheduleSlots.routes"
 import appointmentRoutes from "./routes/appointment.route"
 import contactRoutes from "./routes/contact.routes"
+import bedRoutes from "./routes/beds.routes";
 
 const prisma = new PrismaClient();
 
@@ -23,6 +24,7 @@ app.use("/api/schedule", doctorScheduleSlotRoutes)
 app.use("/api/doctor-schedule", doctorSchedules)
 app.use("/api/appointment", appointmentRoutes)
 app.use("/api/contact", contactRoutes)
+app.use("/api/bed", bedRoutes)
 
 app.get("/", async (req, res) => {
   try {

@@ -13,3 +13,9 @@ export const getAllBedsService = async () => {
     return await prisma.bed.findMany({ orderBy: { id: 'asc' } });
 
 }
+
+export const deleteBedService = async (id: number) => {
+    return await prisma.bed.delete({
+        where: { id },
+    });
+};

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { addBedService, addBedsService, getAllBedsService } from "../services/bed.service";
+import { addBedService, addBedsService, deleteBedService, getAllBedsService } from "../services/bed.service";
 
 export const addBed = async (req: Request, res: Response) => {
     try {
@@ -34,5 +34,22 @@ export const getAllBeds = async (req: Request, res: Response) => {
     } catch (error) {
         console.error('Get All Beds Error:', error);
         res.status(500).json({ success: false, message: 'Failed to fetch beds' });
+    }
+};
+
+export const deleteBed = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+
+        if (!id) {
+            return res.status(400).json({ success: false, message: 'Bed ID is required' });
+        }
+
+        const deletedBed = await deleteBedService(Number(id));
+
+        res.status(200).json({ success: true, message: 'Bed deleted successfully', bed: deletedBed });
+    } catch (error) {
+        console.error('Delete Bed Error:', error);
+        res.status(500).json({ success: false, message: 'Failed to delete bed' });
     }
 };
