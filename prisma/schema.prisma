@@ -107,3 +107,34 @@ model Contact {
   country     String?
   user        User   @relation(fields: [userId], references: [id])
 }
+
+//Beds
+model Bed {
+  id           Int      @id @default(autoincrement())
+  department   String   
+  roomNumber   String   
+  bedNumber    String   
+  available    Boolean  @default(true)
+
+  createdAt    DateTime @default(now())
+}
+
+//Emergency Admission
+model EmergencyAdmission {
+  id              Int       @id @default(autoincrement())
+  patientId       Int?      
+  name            String    
+  age             Int?
+  gender          String?
+  admittedById    Int?       
+  condition       String    
+  department      String    
+  bedId           Int?
+  admissionTime   DateTime   @default(now())
+  status          String     @default("admitted") 
+  remarks         String?
+
+  patient         Patient?   @relation(fields: [patientId], references: [id])
+  admittedBy      User?      @relation(fields: [admittedById], references: [id])
+  bed             Bed?       @relation(fields: [bedId], references: [id])
+}
