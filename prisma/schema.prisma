@@ -21,6 +21,7 @@ model User {
   patient   Patient?
   nurse     Nurse?
   contact   Contact? 
+  emergencyAdmissions EmergencyAdmission[]
 }
 
 // Doctor model
@@ -41,6 +42,7 @@ model Patient {
   age         Int
   gender      String
   appointments Appointment[]
+  emergencyAdmissions EmergencyAdmission[] 
 }
 
 // Nurse model
@@ -108,21 +110,21 @@ model Contact {
   user        User   @relation(fields: [userId], references: [id])
 }
 
-//Beds
+// Bed Model
 model Bed {
-  id           Int      @id @default(autoincrement())
-  department   String   
-  roomNumber   String   
-  bedNumber    String   
-  available    Boolean  @default(true)
-
-  createdAt    DateTime @default(now())
+  id           Int                  @id @default(autoincrement())
+  department   String
+  roomNumber   String
+  bedNumber    String
+  available    Boolean              @default(true)
+  emergencyAdmissions EmergencyAdmission[]
+  createdAt    DateTime             @default(now())
 }
 
-//Emergency Admission
+// Emergency Admission Model
 model EmergencyAdmission {
   id              Int       @id @default(autoincrement())
-  patientId       Int?      
+  patientId       Int?
   name            String    
   age             Int?
   gender          String?
