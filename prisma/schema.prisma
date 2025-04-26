@@ -136,7 +136,7 @@ model EmergencyAdmission {
   status          String     @default("admitted") 
   remarks         String?
 
-  patient         Patient?   @relation(fields: [patientId], references: [id])
-  admittedBy      User?      @relation(fields: [admittedById], references: [id])
-  bed             Bed?       @relation(fields: [bedId], references: [id])
+  patient         Patient?  @relation(fields: [patientId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  admittedBy      User?     @relation(fields: [admittedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  bed             Bed?      @relation(fields: [bedId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
