@@ -31,6 +31,25 @@ export const getScheduleById = async (req: Request, res: Response) => {
     }
 };
 
+export const getScheduleByDoctorId = async (req: Request, res: Response) => {
+    const doctorId = Number(req.params.doctorId);
+
+    if (isNaN(doctorId)) {
+        return res.status(400).json({ error: 'Invalid doctorId parameter' });
+    }
+
+    try {
+        const schedule = await service.getScheduleByDoctorId(doctorId);
+        if (!schedule || schedule.length === 0)
+            return res.status(404).json({ error: 'No schedules found for this doctor' });
+        res.json(schedule);
+    } catch (error) {
+        console.error('Error fetching doctor schedule:', error);
+        res.status(500).json({ error: 'Could not fetch schedule by doctorId' });
+    }
+};
+
+
 export const removeDoctorSchedule = async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
     try {

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createDoctorSchedule, getDoctorsAllSchedule, getScheduleById, removeDoctorSchedule } from '../controllers/doctorSchedule.controller';
+import { createDoctorSchedule, getDoctorsAllSchedule, getScheduleByDoctorId, getScheduleById, removeDoctorSchedule } from '../controllers/doctorSchedule.controller';
 
 const router = Router();
 
@@ -8,5 +8,7 @@ router.get('/', getDoctorsAllSchedule);
 // @ts-ignore
 router.get('/:id', getScheduleById);
 router.delete('/:id', removeDoctorSchedule);
+// @ts-ignore
+router.get('/by-doctor/:doctorId', getScheduleByDoctorId);
 
 export default router;

@@ -16,3 +16,11 @@ export const getScheduleById = async (id: number) => {
 export const deleteScheduleById = async (id: number) => {
   return prisma.doctorSchedule.delete({ where: { id } });
 };
+
+export const getScheduleByDoctorId = async (doctorId: number) => {
+  return await prisma.doctorSchedule.findMany({
+    where: {
+      doctorId: doctorId,
+    },
+  });
+};
