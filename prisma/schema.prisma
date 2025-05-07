@@ -78,6 +78,7 @@ model DoctorScheduleSlot {
   available    Boolean  @default(true)
 
   createdAt    DateTime @default(now())
+  schedule     DoctorSchedule?   @relation("ScheduleToSlot")
 }
 
 //doctor schedule
@@ -92,7 +93,8 @@ model DoctorSchedule {
   location     String
   remarks      String?
   status       String    @default("active")
-  @@unique([doctorId, date])
+  slotId       Int               @unique
+  slot         DoctorScheduleSlot @relation("ScheduleToSlot", fields: [slotId], references: [id])
 }
 
 //user contacts
