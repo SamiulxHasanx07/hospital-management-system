@@ -121,3 +121,58 @@ CREATE TABLE EmergencyAdmission (
     FOREIGN KEY (admittedById) REFERENCES [User](id),
     FOREIGN KEY (bedId) REFERENCES Bed(id)
 );
+
+
+--display tables
+SELECT * FROM [User];
+SELECT * FROM Doctor;
+SELECT * FROM Patient;
+SELECT * FROM Nurse;
+SELECT * FROM Contact;
+SELECT * FROM Bed;
+SELECT * FROM EmergencyAdmission;
+SELECT * FROM Appointment;
+SELECT * FROM DoctorScheduleSlot;
+SELECT * FROM DoctorSchedule;
+
+--Appoinments with doctor and patients with name, date, status
+SELECT 
+    a.id AS AppointmentID,
+    a.date,
+    a.disease,
+    a.status,
+    d.specialty AS DoctorSpecialty,
+    u1.name AS DoctorName,
+    u2.name AS PatientName
+FROM Appointment a
+JOIN Doctor d ON a.doctorId = d.id
+JOIN Patient p ON a.patientId = p.id
+JOIN [User] u1 ON d.userId = u1.id
+JOIN [User] u2 ON p.userId = u2.id;
+
+--count number of appointment per doctor
+SELECT 
+    u.name AS DoctorName,
+    COUNT(a.id) AS AppointmentCount
+FROM Doctor d
+JOIN [User] u ON d.userId = u.id
+LEFT JOIN Appointment a ON a.doctorId = d.id
+GROUP BY u.name;
+
+
+--get available beds
+SELECT 
+    department,
+    COUNT(*) AS AvailableBeds
+FROM Bed
+WHERE available = 1
+GROUP BY department;
+
+--doctor without appointment
+SELECT 
+    u.name AS DoctorName,
+    d.specialty
+FROM Doctor d
+JOIN [User] u ON d.userId = u.id
+LEFT JOIN Appointment a ON a.doctorId = d.id
+WHERE a.id IS NULL;
