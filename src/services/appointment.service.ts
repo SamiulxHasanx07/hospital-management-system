@@ -46,7 +46,7 @@ export const getAppointmentById = async (id: number) => {
 };
 
 export const getAppointmentByDoctorId = async (doctorId: number) => {
-    return await prisma.appointment.findFirst({
+    return await prisma.appointment.findMany({
         where: { doctorId },
         include: {
             doctor: true,
