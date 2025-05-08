@@ -194,4 +194,46 @@ SELECT name, role, email FROM Nurse
 JOIN [User] ON Nurse.userId = [User].id
 WHERE role = 'NURSE';
 
+--Appointments scheduled today
+SELECT *
+FROM Appointment
+WHERE CAST(date AS DATE) = CAST(GETDATE() AS DATE);
 
+--appointment in last 7 days
+SELECT *
+FROM Appointment
+WHERE date >= DATEADD(DAY, -7, GETDATE());
+
+--insert appointment with random date time
+INSERT INTO Appointment (date, doctorId, patientId, scheduleId, slotId, disease, status, remarks)
+VALUES 
+('2025-05-09 10:00:00.0000000', 1, 1, 1, 1, 'Flu', 'booked', 'Regular checkup'),
+('2025-05-09 14:00:00.0000000', 1, 1, 1, 1, 'Cough', 'booked', 'Mild fever');
+
+INSERT INTO Appointment (date, doctorId, patientId, scheduleId, slotId, disease, status, remarks)
+VALUES 
+('2025-05-15 09:00:00.0000000', 1, 1, 1, 1, 'Diabetes', 'booked', 'Routine test'),
+('2025-05-16 12:00:00.0000000', 1, 1, 1, 1, 'Blood Pressure', 'booked', 'Follow-up');
+
+
+--insert data into emergency appointment
+-- Today
+INSERT INTO EmergencyAdmission (patientId, name, age, gender, admittedById, condition, department, bedId, admissionTime, status, remarks)
+VALUES 
+(1, 'John Doe', 45, 'Male', 5, 'Chest Pain', 'Cardiology', 1, '2025-05-08 08:30:00.0000000', 'admitted', 'Severe pain in chest'),
+(1, 'Jane Smith', 32, 'Female', 5, 'Seizure', 'Neurology', 1, '2025-05-08 10:15:00.0000000', 'admitted', 'Frequent seizures reported');
+
+
+-- 3 days ago
+INSERT INTO EmergencyAdmission (patientId, name, age, gender, admittedById, condition, department, bedId, admissionTime, status, remarks)
+VALUES 
+(1, 'Alice Brown', 29, 'Female', 5, 'High Fever', 'General', 1, '2025-05-05 14:00:00.0000000', 'discharged', 'Discharged after treatment');
+
+--7 days ago
+INSERT INTO EmergencyAdmission (patientId, name, age, gender, admittedById, condition, department, bedId, admissionTime, status, remarks)
+VALUES 
+(1, 'Michael Lee', 60, 'Male', 5, 'Stroke', 'Neurology', 1, '2025-05-01 16:45:00.0000000', 'admitted', 'Under observation');
+
+SELECT *
+FROM EmergencyAdmission
+WHERE admissionTime >= DATEADD(DAY, -7, GETDATE());
