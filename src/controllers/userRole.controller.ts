@@ -33,3 +33,56 @@ export const getNurseById = async (req: Request, res: Response) => {
     if (!nurse) return res.status(404).json({ message: 'Nurse not found' });
     res.json(nurse);
 };
+
+
+export const deleteDoctor = async (req: Request, res: Response) => {
+    const doctorId = Number(req.params.id);
+
+    try {
+        const deletedDoctor = await roleService.deleteDoctorService(doctorId);
+
+        if (!deletedDoctor) {
+            return res.status(404).json({ message: 'Doctor not found' });
+        }
+
+        return res.status(200).json({ message: 'Doctor deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Server error while deleting doctor' });
+    }
+};
+
+export const deletePatient = async (req: Request, res: Response) => {
+    const patientId = Number(req.params.id);
+
+    try {
+        const deletedPatient = await roleService.deletePatientService(patientId);
+
+        if (!deletedPatient) {
+            return res.status(404).json({ message: 'Patient not found' });
+        }
+
+        return res.status(200).json({ message: 'Patient deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Server error while deleting patient' });
+    }
+};
+
+
+export const deleteNurse = async (req: Request, res: Response) => {
+    const nurseId = Number(req.params.id);
+
+    try {
+        const deletedNurse = await roleService.deleteNurseService(nurseId);
+
+        if (!deletedNurse) {
+            return res.status(404).json({ message: 'Nurse not found' });
+        }
+
+        return res.status(200).json({ message: 'Nurse deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Server error while deleting nurse' });
+    }
+};
