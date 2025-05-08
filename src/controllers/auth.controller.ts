@@ -29,7 +29,29 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
 
     try {
         const { user, token } = await loginUser(email, password);
-        return res.status(200).json({ message: "Login successful", user, token });
+        let actualId: number | null = null;
+
+        if (user.role === 'DOCTOR') {
+            const doctor = await prisma.doctor.findUnique({
+                where: { userId: user.id },
+                select: { id: true },
+            });
+            actualId = doctor?.id ?? null;
+        } else if (user.role === 'PATIENT') {
+            const patient = await prisma.patient.findUnique({
+                where: { userId: user.id },
+                select: { id: true },
+            });
+            actualId = patient?.id ?? null;
+        } else if (user.role === 'NURSE') {
+            const patient = await prisma.nurse.findUnique({
+                where: { userId: user.id },
+                select: { id: true },
+            });
+            actualId = patient?.id ?? null;
+        }
+
+        return res.status(200).json({ message: "Login successful", user, token, actualId });
     } catch (error: any) {
         const message = error.message || "Internal server error";
 
