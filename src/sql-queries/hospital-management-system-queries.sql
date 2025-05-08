@@ -176,3 +176,8 @@ FROM Doctor d
 JOIN [User] u ON d.userId = u.id
 LEFT JOIN Appointment a ON a.doctorId = d.id
 WHERE a.id IS NULL;
+
+
+SELECT name, specialty FROM Doctor
+JOIN [User] ON Doctor.userId = [User].id
+WHERE specialty = 'Cardiology';
