@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createAppointment, deleteAppointment, getAllAppointments, getAppointmentByDoctorId, getAppointmentById, updateAppointment } from "../services/appointment.service";
+import { createAppointment, deleteAppointment, getAllAppointments, getAppointmentByDoctorId, getAppointmentById, getAppointmentByPatientId, updateAppointment } from "../services/appointment.service";
 
 export const create = async (req: Request, res: Response) => {
     try {
@@ -24,6 +24,12 @@ export const getById = async (req: Request, res: Response) => {
 export const getByDoctorId = async (req: Request, res: Response) => {
     const doctorId = parseInt(req.params.doctorId);
     const appointment = await getAppointmentByDoctorId(doctorId);
+    if (!appointment) return res.status(404).json({ error: 'Not found' });
+    res.json(appointment);
+};
+export const getByPatientId = async (req: Request, res: Response) => {
+    const patientId = parseInt(req.params.patientId);
+    const appointment = await getAppointmentByPatientId(patientId);
     if (!appointment) return res.status(404).json({ error: 'Not found' });
     res.json(appointment);
 };

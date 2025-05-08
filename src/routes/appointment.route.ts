@@ -9,6 +9,8 @@ router.get('/', Appointment.getAll);
 router.get('/:id', Appointment.getById);
 // @ts-ignore
 router.get('/by-doctor/:doctorId', Appointment.getByDoctorId);
+// @ts-ignore
+router.get('/by-patient/:patientId', Appointment.getByPatientId);
 router.put('/:id', Appointment.update);
 router.delete('/:id', Appointment.remove);
 
