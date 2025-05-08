@@ -45,6 +45,16 @@ export const getAppointmentById = async (id: number) => {
     });
 };
 
+export const getAppointmentByDoctorId = async (doctorId: number) => {
+    return await prisma.appointment.findFirst({
+        where: { doctorId },
+        include: {
+            doctor: true,
+            patient: true,
+        },
+    });
+};
+
 export const updateAppointment = async (
     id: number,
     data: Partial<Omit<Appointment, 'id'>>
