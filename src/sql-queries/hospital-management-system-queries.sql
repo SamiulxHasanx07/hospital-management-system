@@ -177,7 +177,21 @@ JOIN [User] u ON d.userId = u.id
 LEFT JOIN Appointment a ON a.doctorId = d.id
 WHERE a.id IS NULL;
 
-
 SELECT name, specialty FROM Doctor
 JOIN [User] ON Doctor.userId = [User].id
 WHERE specialty = 'Cardiology';
+
+--get role based user
+SELECT name, role, email, experience FROM Doctor
+JOIN [User] ON Doctor.userId = [User].id
+WHERE role = 'DOCTOR';
+
+SELECT name, role, email FROM Patient
+JOIN [User] ON Patient.userId = [User].id
+WHERE role = 'PATIENT';
+
+SELECT name, role, email FROM Nurse
+JOIN [User] ON Nurse.userId = [User].id
+WHERE role = 'NURSE';
+
+
